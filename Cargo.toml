@@ -1,10 +1,10 @@
 [package]
 name = "bevy_outline_post_process"
-version = "0.4.0"
+version = "0.5.0"
 edition = "2021"
 description = "An adaptive outline post-processing effect for the Bevy game engine."
 license = "0BSD OR MIT OR Apache-2.0"
-repository = "https://git.exvacuum.dev/bevy_outline_post_process"
+repository = "https://git.soaos.dev/bevy_outline_post_process"
 
 [dependencies.bevy]
 version = "0.15"

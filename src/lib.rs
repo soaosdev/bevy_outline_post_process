@@ -9,7 +9,9 @@ use bevy::{
     core_pipeline::core_3d::graph::{Core3d, Node3d},
     prelude::*,
     render::{
-        extract_component::{ExtractComponentPlugin, UniformComponentPlugin}, render_graph::{RenderGraphApp, ViewNodeRunner}, RenderApp
+        extract_component::{ExtractComponentPlugin, UniformComponentPlugin},
+        render_graph::{RenderGraphApp, ViewNodeRunner},
+        RenderApp,
     },
 };
 
@@ -31,7 +33,8 @@ impl Plugin for OutlinePostProcessPlugin {
         app.add_plugins((
             UniformComponentPlugin::<components::OutlinePostProcessSettings>::default(),
             ExtractComponentPlugin::<components::OutlinePostProcessSettings>::default(),
-        )).add_systems(Update, update_shader_clip_planes);
+        ))
+        .add_systems(Update, update_shader_clip_planes);
 
         let Some(render_app) = app.get_sub_app_mut(RenderApp) else {
             return;

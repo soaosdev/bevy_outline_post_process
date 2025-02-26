@@ -7,20 +7,18 @@
 
 A plugin for the [Bevy](https://bevyengine.org) engine which adds an outline post-processing effect. Optionally supports adaptive outlining, so darker areas are outlined in white rather than black, based on luminance.
 
-Note: This is a full-screen post process effect and cannot be enabled/disabled for specific objects.
-
 ## Screenshots
 ![](https://git.exvacuum.dev/bevy_outline_post_process/plain/doc/screenshot.png)
 ![](https://git.exvacuum.dev/bevy_outline_post_process/plain/doc/screenshot_smooth.png)
 Configuration Used:
 ```rs
-bevy_outline_post_process::components::OutlinePostProcessSettings::new(2.0, 0.0, false, 0.0);
+bevy_outline_post_process::components::OutlinePostProcessSettings::new(2.0, LinearRgba::BLACK, 0.01, 0.01, 1.0);
 ```
 ## Compatibility
 
 | Crate Version | Bevy Version |
 |---            |---           |
-| 0.4           | 0.15         |
+| 0.4-0.5       | 0.15         |
 | 0.3           | 0.14         |
 | 0.1-0.2       | 0.13         |
 
@@ -29,13 +27,13 @@ bevy_outline_post_process::components::OutlinePostProcessSettings::new(2.0, 0.0,
 ### crates.io
 ```toml
 [dependencies]
-bevy_outline_post_process = "0.4"
+bevy_outline_post_process = "0.5"
 ```
 
 ### Using git URL in Cargo.toml
 ```toml
 [dependencies.bevy_outline_post_process]
-git = "https://git.exvacuum.dev/bevy_outline_post_process"
+git = "https://git.soaos.dev/bevy_outline_post_process"
 ```
 
 ## Usage
@@ -59,7 +57,7 @@ When spawning a camera:
 ```rs
 commands.spawn((
     // Camera3d...
-    bevy_outline_post_process::components::OutlinePostProcessSettings::new(2.0, 0.0, false, 0.0);
+    bevy_outline_post_process::components::OutlinePostProcessSettings::default();
 ));
 ```
 
