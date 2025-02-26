@@ -20,6 +20,7 @@ pub struct OutlinePostProcessPipeline {
     pub layout: BindGroupLayout,
     pub screen_sampler: Sampler,
     pub normal_sampler: Sampler,
+    pub depth_sampler: Sampler,
     pub pipeline_id: CachedRenderPipelineId,
 }
 
@@ -36,7 +37,8 @@ impl FromWorld for OutlinePostProcessPipeline {
                     sampler(SamplerBindingType::Filtering),
                     texture_2d(TextureSampleType::Float { filterable: true }),
                     sampler(SamplerBindingType::Filtering),
-                    texture_2d(TextureSampleType::Uint),
+                    texture_2d(TextureSampleType::Depth),
+                    sampler(SamplerBindingType::NonFiltering),
                     uniform_buffer::<components::OutlinePostProcessSettings>(false),
                 ),
             ),
@@ -44,6 +46,7 @@ impl FromWorld for OutlinePostProcessPipeline {
 
         let screen_sampler = render_device.create_sampler(&SamplerDescriptor::default());
         let normal_sampler = render_device.create_sampler(&SamplerDescriptor::default());
+        let depth_sampler = render_device.create_sampler(&SamplerDescriptor::default());
 
         let shader = world.resource::<AssetServer>().load::<Shader>(
             "embedded://bevy_outline_post_process/../assets/shaders/outline_post_process.wgsl",
@@ -77,6 +80,7 @@ impl FromWorld for OutlinePostProcessPipeline {
             layout,
             screen_sampler,
             normal_sampler,
+            depth_sampler,
             pipeline_id,
         }
     }

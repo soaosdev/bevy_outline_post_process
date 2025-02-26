@@ -57,8 +57,8 @@ impl ViewNode for OutlineRenderNode {
             return Ok(());
         };
 
-        let Some(deferred_buffer_view) = view_prepass_textures.deferred_view() else {
-            error!("Failed to get deferred buffer view");
+        let Some(depth_buffer_view) = view_prepass_textures.depth_view() else {
+            error!("Failed to get normal buffer view");
             return Ok(());
         };
 
@@ -72,7 +72,8 @@ impl ViewNode for OutlineRenderNode {
                 &render_pipeline.screen_sampler,
                 normal_buffer_view,
                 &render_pipeline.normal_sampler,
-                deferred_buffer_view,
+                depth_buffer_view,
+                &render_pipeline.depth_sampler,
                 uniform_binding,
             )),
         );

@@ -1,7 +1,7 @@
 #![warn(missing_docs)]
 
 //! A plugin for the Bevy game engine which provides an outline post-process effect. The effect
-//! makes use of a normal prepass to generate outlines where differences in the normal buffer
+//! makes use of a normal and depth prepass to generate outlines where significant differences in the values
 //! occur.
 
 use bevy::{
@@ -9,12 +9,11 @@ use bevy::{
     core_pipeline::core_3d::graph::{Core3d, Node3d},
     prelude::*,
     render::{
-        extract_component::{ExtractComponentPlugin, UniformComponentPlugin},
-        render_graph::{RenderGraphApp, ViewNodeRunner},
-        RenderApp,
+        extract_component::{ExtractComponentPlugin, UniformComponentPlugin}, render_graph::{RenderGraphApp, ViewNodeRunner}, RenderApp
     },
 };
 
+use components::OutlinePostProcessSettings;
 pub use nodes::OutlineRenderLabel;
 
 /// Components used by this plugin.
@@ -32,7 +31,7 @@ impl Plugin for OutlinePostProcessPlugin {
         app.add_plugins((
             UniformComponentPlugin::<components::OutlinePostProcessSettings>::default(),
             ExtractComponentPlugin::<components::OutlinePostProcessSettings>::default(),
-        ));
+        )).add_systems(Update, update_shader_clip_planes);
 
         let Some(render_app) = app.get_sub_app_mut(RenderApp) else {
             return;
@@ -59,5 +58,17 @@ impl Plugin for OutlinePostProcessPlugin {
         };
 
         render_app.init_resource::<resources::OutlinePostProcessPipeline>();
+    }
+}
+
+fn update_shader_clip_planes(
+    mut settings_query: Query<(Ref<Projection>, &mut OutlinePostProcessSettings)>,
+) {
+    for (projection, mut settings) in settings_query.iter_mut() {
+        if projection.is_changed() {
+            if let Projection::Perspective(projection) = projection.into_inner() {
+                settings.camera_near = projection.near;
+            }
+        }
     }
 }
